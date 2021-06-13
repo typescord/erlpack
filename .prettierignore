@@ -1,7 +1,5 @@
 .vscode
+build
 .yarn
 .yarnrc.yml
-*.pnp.js
-cpp
-vendor
-dist
+.pnp.*

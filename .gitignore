@@ -1,3 +1,12 @@
+# Yarn 2
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # Logs
 logs
 *.log
@@ -15,9 +24,8 @@ pids
 *.seed
 *.pid.lock
 
-# TypeScript
-*.tsbuildinfo
-dist
+# Dependency directories
+node_modules
 
 # Optional npm cache directory
 .npm
@@ -31,8 +39,6 @@ dist
 # Output of 'npm pack'
 *.tgz
 
-prebuild
+# TypeScript
+*.tsbuildinfo
 build
-build-tmp*
-
-node_modules

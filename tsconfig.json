@@ -1,14 +1,12 @@
 {
 	"compilerOptions": {
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"declaration": true,
 		"strict": true,
 		"target": "ESNext",
-		"lib": ["ESNext"],
-		"outDir": "dist",
-		"declaration": true,
-		"removeComments": true,
-		"module": "CommonJS"
+		"outDir": "build"
 	},
-	"include": ["lib/**/*.ts", "lib/**/__tests__/*.ts"]
+	"include": ["src/**/*.ts"]
 }
