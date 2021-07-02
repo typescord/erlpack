@@ -5,11 +5,7 @@ on:
 
 jobs:
   release-please:
-    name: Release Please
     runs-on: ubuntu-latest
-    outputs:
-      released: ${{ steps.release.outputs.release_created }}
-      tag: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: GoogleCloudPlatform/release-please-action@v2
         id: release
@@ -21,108 +17,22 @@ jobs:
           bump-minor-pre-major: true
           changelog-types: '[{"type":"feat","section":"Features"},{"type":"fix","section":"Bug Fixes"},{"type":"perf","section":"Performance Improvements"},{"type":"deps","section":"Dependencies"},{"type":"revert","section":"Reverts"},{"type":"docs","section":"Documentation"},{"type":"style","section":"Styles","hidden":true},{"type":"chore","section":"Miscellaneous Chores","hidden":true},{"type":"refactor","section":"Code Refactoring","hidden":true},{"type":"test","section":"Tests","hidden":true},{"type":"ci","section":"Continuous Integration","hidden":true}]'
 
-  prebuild:
-    name: Prebuild
-    needs: release-please
-    if: ${{ needs.release-please.outputs.released }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [15, 16]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Install Python v3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install Node.js v${{ matrix.node }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install dependencies
-        run: yarn install --immutable
-        env:
-          npm_config_build_from_source: true
-
-      - name: Package prebuild
-        run: yarn build
-
-      - name: Upload prebuild assets
-        uses: svenstaro/upload-release-action@v2
-        with:
-          file: build/stage/**/*.tar.gz
-          file_glob: true
-          tag: ${{ needs.release-please.outputs.tag }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-
-  prebuild_musl:
-    name: Prebuild (musl)
-    needs: release-please
-    if: ${{ needs.release-please.outputs.released }}
-    runs-on: ubuntu-latest
-    container:
-      image: node:${{ matrix.node }}-alpine
-    strategy:
-      matrix:
-        node: [15, 16]
-
-    steps:
-      - name: Setup environment
-        run: |
-          apk add --update
-          apk add --no-cache ca-certificates git curl build-base 'python3>3.6.0' g++ make
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Install dependencies
-        run: yarn install --immutable
-        env:
-          npm_config_build_from_source: true
-          npm_config_unsafe_perm: true
-
-      - name: Package prebuild
-        run: yarn build
-
-      - name: Upload prebuild assets
-        uses: svenstaro/upload-release-action@v2
-        with:
-          file: build/stage/**/*.tar.gz
-          file_glob: true
-          tag: ${{ needs.release-please.outputs.tag }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-
-  publish:
-    name: Publish to NPM
-    runs-on: ubuntu-latest
-    needs: release-please
-    if: ${{ needs.release-please.outputs.released }}
-    steps:
       - uses: actions/checkout@v2
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Use Node.js v15
         uses: actions/setup-node@v2
         with:
           node-version: 15
           registry-url: https://registry.npmjs.org
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-        env:
-          npm_config_build_from_source: true
+        run: yarn install --immutable
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Publish to NPM
         run: yarn npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: ${{ steps.release.outputs.release_created }}

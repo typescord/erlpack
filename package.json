@@ -1,89 +1,72 @@
 {
-  "name": "@typescord/erlpack",
-  "version": "0.8.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "description": "Erlpack is a fast encoder and decoder for the Erlang Term Format (version 131) for JavaScript",
-  "author": "Jason Citron",
-  "maintainers": [
-    "Typescord"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=15.0.0 <17"
-  },
-  "scripts": {
-    "prepublishOnly": "yarn build-ts",
-    "install": "node-pre-gyp install --fallback-to-build",
-    "build": "node-pre-gyp install build package",
-    "build-ts": "rimraf dist && tsc -p tsconfig.prod.json",
-    "test": "jest",
-    "lint": "eslint . --ext ts",
-    "lint-fix": "yarn lint --fix",
-    "format": "prettier . --write",
-    "mrm": "mrm --preset @typescord/mrm-preset"
-  },
-  "homepage": "https://github.com/typescord/erlpack#readme",
-  "bugs": {
-    "url": "https://github.com/typescord/erlpack/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/typescord/erlpack.git"
-  },
-  "prettier": "@typescord/prettier-config",
-  "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.4",
-    "node-addon-api": "^3.1.0",
-    "node-gyp": "^8.0.0"
-  },
-  "files": [
-    "src",
-    "vendor",
-    "cpp",
-    "dist",
-    "binding.gyp"
-  ],
-  "keywords": [
-    "discord",
-    "erlpack",
-    "typescord"
-  ],
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.0.1",
-    "@typescord/eslint-config": "^0.2.1",
-    "@typescord/mrm-preset": "^2.1.2",
-    "@typescord/prettier-config": "^0.1.2",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.25.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-node": "^0.3.4",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-sonarjs": "^0.7.0",
-    "eslint-plugin-unicorn": "^31.0.0",
-    "jest": "^26.6.3",
-    "mrm": "^3.0.1",
-    "prettier": "^2.2.1",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^26.5.5",
-    "typescript": "~4.2.4"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
-  "binary": {
-    "module_name": "erlpack",
-    "module_path": "./prebuild/{node_abi}-napi-v{napi_build_version}-{platform}-{arch}-{libc}/",
-    "remote_path": "v{version}",
-    "package_name": "{module_name}-v{version}-{node_abi}-napi-v{napi_build_version}-{platform}-{arch}-{libc}.tar.gz",
-    "host": "https://github.com/typescord/erlpack/releases/download/",
-    "napi_versions": [
-      3
-    ]
-  }
+	"name": "@typescord/ftee",
+	"version": "0.8.0",
+	"main": "build/index.js",
+	"types": "build/index.d.ts",
+	"description": "Ftee is a fast encoder and decoder for the Erlang External Term Format (version 131) written in TypeScript.",
+	"author": "Typescord",
+	"license": "MIT",
+	"engines": {
+		"node": ">=12.0.0 <17"
+	},
+	"scripts": {
+		"prepack": "yarn build",
+		"build": "rimraf build && tsc -p tsconfig.prod.json",
+		"test": "jest",
+		"lint": "eslint . --ext ts",
+		"lint-fix": "yarn lint --fix",
+		"format": "prettier . --write",
+		"benchmark": "yarn build && node benchmark.js",
+		"mrm": "mrm --preset @typescord/mrm-preset"
+	},
+	"homepage": "https://github.com/typescord/ftee#readme",
+	"bugs": {
+		"url": "https://github.com/typescord/ftee/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/typescord/ftee.git"
+	},
+	"prettier": "@typescord/prettier-config",
+	"files": [
+		"build"
+	],
+	"keywords": [
+		"discord",
+		"ftee",
+		"etf",
+		"typescord"
+	],
+	"devDependencies": {
+		"@types/benchmark": "^2.1.0",
+		"@types/jest": "^26.0.23",
+		"@types/node": "^15.12.2",
+		"@typescord/eslint-config": "^0.4.0",
+		"@typescord/mrm-preset": "^2.1.2",
+		"@typescord/prettier-config": "^0.1.2",
+		"@typescript-eslint/eslint-plugin": "^4.26.1",
+		"@typescript-eslint/parser": "^4.26.1",
+		"benchmark": "^2.1.4",
+		"eslint": "^7.28.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-import-resolver-node": "^0.3.4",
+		"eslint-plugin-import": "^2.23.4",
+		"eslint-plugin-prettier": "^3.4.0",
+		"eslint-plugin-simple-import-sort": "^7.0.0",
+		"eslint-plugin-sonarjs": "^0.8.0-125",
+		"eslint-plugin-unicorn": "^33.0.1",
+		"jest": "^27.0.4",
+		"mrm": "^3.0.2",
+		"prettier": "^2.3.1",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^27.0.3",
+		"typescript": "~4.3.2"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node"
+	},
+	"volta": {
+		"node": "15.14.0"
+	}
 }
